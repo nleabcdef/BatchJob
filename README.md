@@ -22,7 +22,7 @@ AutoJob’s fluent based interfaces, allow developers to create integrations with 
   - Supports both syn and async job execution
   - Out of the box, in-memory Data/Context sharing
 
-> Since it provides module code design, definitely developers could avoid ‘God class’ anti-pattern
+> Since it provides modular design, definitely developers could avoid ‘God class’ anti-pattern
 	https://sourcemaking.com/antipatterns/the-blob
 
 # Quick start: 
