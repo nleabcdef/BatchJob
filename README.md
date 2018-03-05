@@ -1,6 +1,6 @@
 ## AutoJob - A modular and thread safe execution engine built on C#
 
-[![N|Solid](https://cdn.rawgit.com/nleabcdef/BatchJob/e0ccb590/common/AutoJob.png)](https://github.com/nleabcdef/BatchJob)
+[![N|Solid](https://raw.githubusercontent.com/nleabcdef/BatchJob/master/common/AutoJob.png)](https://github.com/nleabcdef/BatchJob)
 
 AutoJob is a modular and thread safe execution engine for .Net, which enables developers to define sequential and/or parallel executable units (task or class) and execute them as defined.
 With AutoJob, any integration code will become modular, easy to maintain and quickly built by its reusable infrastructure include definition and runtime support.
@@ -110,7 +110,18 @@ foreach (var r in retry.RetryResults)
 	https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md
 
 # Installation
- - via Nuget
+### from nuget
+ > https://www.nuget.org/packages/BatchProcess.AutoJob
+
+ - using Package Manager
+ ```ps
+PM> Install-Package BatchProcess.AutoJob -Version 0.1.2
+ ```
  
+ - using .NET CLI
+ ```ps
+> dotnet add package BatchProcess.AutoJob --version 0.1.2
+ ```
+
 # License : Apache License 2.0
  - read more here http://www.apache.org/licenses/ 

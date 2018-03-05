@@ -7,7 +7,7 @@
 
     <Description>A modular and thread safe execution engine built on C#</Description>
 
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
 
     <Authors>Contributions of Repo - https://github.com/nleabcdef/BatchJob</Authors>
 
@@ -17,11 +17,11 @@
 
     <Copyright>Copyright to Balamurugan M</Copyright>
 
-    <PackageLicenseUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/56f07c5d948429e025359f2b30cfe7561ceeecab/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/nleabcdef/BatchJob/master/LICENSE</PackageLicenseUrl>
 
     <PackageProjectUrl>https://github.com/nleabcdef/BatchJob</PackageProjectUrl>
 
-    <PackageIconUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/e0ccb590/common/AutoJob.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/nleabcdef/BatchJob/master/common/AutoJob.png</PackageIconUrl>
 
     <RepositoryUrl>https://github.com/nleabcdef/BatchJob</RepositoryUrl>
 
