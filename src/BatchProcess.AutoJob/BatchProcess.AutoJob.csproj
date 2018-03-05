@@ -3,26 +3,27 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.1.1</Version>
-    <Authors>Balamurugan M</Authors>
-    <Company>void method</Company>
+    <Authors>Contributions of Repo - https://github.com/nleabcdef/BatchJob</Authors>
+    <Company>Free</Company>
     <Product>BatchProcess Automated</Product>
     <PackageId>BatchProcess.AutoJob</PackageId>
     <AssemblyVersion>0.1.1.0</AssemblyVersion>
     <FileVersion>0.1.1.0</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description>Enables, workflow kind of processing in BatchPrcessing environment</Description>
-    <Copyright>Copyright to void method</Copyright>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>Project URL</PackageProjectUrl>
-    <PackageIconUrl>Icon URL</PackageIconUrl>
-    <RepositoryUrl>Repo URL</RepositoryUrl>
-    <RepositoryType>Repo type</RepositoryType>
-    <PackageTags>Tags</PackageTags>
-    <PackageReleaseNotes>Release</PackageReleaseNotes>
+    <Description>A modular and thread safe execution engine built on C#</Description>
+    <Copyright>Copyright to Balamurugan M</Copyright>
+    <PackageLicenseUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/56f07c5d948429e025359f2b30cfe7561ceeecab/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/nleabcdef/BatchJob</PackageProjectUrl>
+    <PackageIconUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/e0ccb590/common/AutoJob.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/nleabcdef/BatchJob</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>c# .net-core-2.0 .Net-4.6.1 workflow mono</PackageTags>
+    <PackageReleaseNotes>Beta - intial release</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>AutoJob.snk</AssemblyOriginatorKeyFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

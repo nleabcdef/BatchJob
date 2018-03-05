@@ -4,6 +4,32 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Description>A modular and thread safe execution engine built on C#</Description>
+
+    <Version>0.1.1</Version>
+
+    <Authors>Contributions of Repo - https://github.com/nleabcdef/BatchJob</Authors>
+
+    <Company>free</Company>
+
+    <Product>BatchProcess Automated</Product>
+
+    <Copyright>Copyright to Balamurugan M</Copyright>
+
+    <PackageLicenseUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/56f07c5d948429e025359f2b30cfe7561ceeecab/LICENSE</PackageLicenseUrl>
+
+    <PackageProjectUrl>https://github.com/nleabcdef/BatchJob</PackageProjectUrl>
+
+    <PackageIconUrl>https://cdn.rawgit.com/nleabcdef/BatchJob/e0ccb590/common/AutoJob.png</PackageIconUrl>
+
+    <RepositoryUrl>https://github.com/nleabcdef/BatchJob</RepositoryUrl>
+
+    <PackageTags>c# .net-core-2.0 .Net-4.6.1 workflow mono</PackageTags>
+
+    <PackageReleaseNotes>Beta - intial release</PackageReleaseNotes>
+
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

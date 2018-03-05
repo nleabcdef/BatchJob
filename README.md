@@ -1,4 +1,4 @@
-## AutoJob
+## AutoJob - A modular and thread safe execution engine built on C#
 
 [![N|Solid](https://cdn.rawgit.com/nleabcdef/BatchJob/e0ccb590/common/AutoJob.png)](https://github.com/nleabcdef/BatchJob)
 
@@ -114,4 +114,3 @@ foreach (var r in retry.RetryResults)
  
 # License : Apache License 2.0
  - read more here http://www.apache.org/licenses/ 
-# BatchJob
