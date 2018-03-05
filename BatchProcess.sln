@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{F216EAAC-5A84-430F-A16A-2C2BE5818938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchProcess.AutoJob", "src\BatchProcess.AutoJob\BatchProcess.AutoJob.csproj", "{6958C138-0C08-4B0F-9F50-3481324FDD54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{966E603D-B66B-42B3-A88D-E27E36BD584E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchProcess.TestAutoJob", "test\BatchProcess.TestAutoJob\BatchProcess.TestAutoJob.csproj", "{2F316C77-C65F-4FA3-A8B1-6A33D47293BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{60D8BF14-2F2D-4D3E-BA85-FC46C91C3B00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6958C138-0C08-4B0F-9F50-3481324FDD54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6958C138-0C08-4B0F-9F50-3481324FDD54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6958C138-0C08-4B0F-9F50-3481324FDD54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6958C138-0C08-4B0F-9F50-3481324FDD54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6958C138-0C08-4B0F-9F50-3481324FDD54} = {F216EAAC-5A84-430F-A16A-2C2BE5818938}
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE} = {966E603D-B66B-42B3-A88D-E27E36BD584E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A55E0A0-C23A-491E-B0F5-01A4F2A82778}
+	EndGlobalSection
+EndGlobal
