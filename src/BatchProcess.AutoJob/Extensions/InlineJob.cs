@@ -16,44 +16,44 @@ namespace BatchProcess.AutoJob.Extensions
 
         public Mutex mLock => _lock;
         private Mutex _lock = new Mutex();
-        private Func<JobResult> _inline { get; set; }
+        private Func<IJobContext, JobResult> _inline { get; set; }
         public virtual JobResult Doable()
         {
-            return _inline();
+            return _inline(Context);
         }
 
         private InlineJob() { }
-        public InlineJob(JobId id, Func<JobResult> inline, IJobContext context = null)
+        public InlineJob(JobId id, Func<IJobContext, JobResult> inline, IJobContext context = null)
         {
 
             Id = id ?? throw new ArgumentNullException("id");
             Context = context ?? new JobContext(Id);
 
-            JobResult inl()
+            JobResult inl(IJobContext ctx)
             { return new JobResult(JobStatus.Completed); }
             _inline = inline ?? inl;
 
         }
 
-        public InlineJob(JobId id, Action inline, IJobContext context = null)
+        public InlineJob(JobId id, Action<IJobContext> inline, IJobContext context = null)
         {
 
             Id = id ?? throw new ArgumentNullException("id");
             Context = context ?? new JobContext(Id);
 
-            JobResult inl()
-            { inline?.Invoke(); return new JobResult(JobStatus.Completed); }
+            JobResult inl(IJobContext ctx)
+            { inline?.Invoke(Context); return new JobResult(JobStatus.Completed); }
 
             _inline = inl;
 
         }
 
-        public static InlineJob GetDefault(Func<JobResult> action)
+        public static InlineJob GetDefault(Func<IJobContext, JobResult> action)
         {
             return new InlineJob(GetJobId(), action);
         }
 
-        public static InlineJob GetDefault(Action action)
+        public static InlineJob GetDefault(Action<IJobContext> action)
         {
             return new InlineJob(GetJobId(), action);
         }

@@ -6,7 +6,9 @@ namespace BatchProcess
     {
         static void Main(string[] args)
         {
-            //new SimpleBatchProcessing().Run();
+            new ReadmeExample().Run();
+
+            Console.ReadLine();
         }
     }
 }

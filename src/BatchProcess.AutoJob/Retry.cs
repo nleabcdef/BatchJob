@@ -155,7 +155,11 @@ namespace BatchProcess.AutoJob
                     string.Format(_msgRetryError, CurrentRetry, Times));
 
                 if (anyError)
-                    return false;
+                {
+                    result = new JobResult(JobStatus.CompletedWithError,
+                        new AutoJobException(_job.Id, null, 
+                        string.Format(_msgRetryError, CurrentRetry, Times)));
+                }
             }
             else
                 return true;

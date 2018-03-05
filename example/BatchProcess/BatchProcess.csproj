@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SimpleBatchProcessing.cs" />
+    <ProjectReference Include="..\..\src\BatchProcess.AutoJob\BatchProcess.AutoJob.csproj" />
   </ItemGroup>
 
 </Project>
