@@ -64,7 +64,7 @@ namespace BatchProcess.TestAutoJob.Runtime
             //act
             IWorkflowRunner runner = new SequentialRunner().Start(workflow);
             runner.SoftStop();
-            Thread.Sleep(500);
+            Thread.Sleep(2500);
             var actual = runner.GetStatus(job.Id);
 
             //assert

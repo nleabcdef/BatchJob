@@ -7,7 +7,7 @@
 
     <Description>A modular and thread safe execution engine built on C#</Description>
 
-    <Version>0.1.2</Version>
+    <Version>0.1.3-beta</Version>
 
     <Authors>Contributions of Repo - https://github.com/nleabcdef/BatchJob</Authors>
 
@@ -27,9 +27,13 @@
 
     <PackageTags>c# .net-core-2.0 .Net-4.6.1 workflow mono</PackageTags>
 
-    <PackageReleaseNotes>Beta - intial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Beta - release</PackageReleaseNotes>
 
     <RepositoryType>Git</RepositoryType>
+
+    <AssemblyVersion>0.1.2.1</AssemblyVersion>
+
+    <FileVersion>0.1.2.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

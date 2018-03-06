@@ -4,13 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>AutoJob Core</Title>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Version>0.1.2</Version>
+    <Version>0.1.3-beta</Version>
     <Authors>Contributions of Repo - https://github.com/nleabcdef/BatchJob</Authors>
     <Company>Free</Company>
     <Product>BatchProcess Automated</Product>
     <PackageId>BatchProcess.AutoJob</PackageId>
-    <AssemblyVersion>0.1.2.0</AssemblyVersion>
-    <FileVersion>0.1.2.0</FileVersion>
+    <AssemblyVersion>0.1.3.1</AssemblyVersion>
+    <FileVersion>0.1.2.1</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <Summary>https://github.com/nleabcdef/BatchJob</Summary>
     <Description>A modular and thread safe execution engine built on C#</Description>
@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/nleabcdef/BatchJob</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>c# .net-core-2.0 .Net-4.6.1 workflow mono</PackageTags>
-    <PackageReleaseNotes>Beta - intial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Beta - release</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>

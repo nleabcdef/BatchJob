@@ -1,4 +1,5 @@
 ## AutoJob - A modular and thread safe execution engine built on C#
+![Build status](https://nle-abcdef.visualstudio.com/_apis/public/build/definitions/679e92cd-8c0a-4ac1-987c-5eb2b0116bcb/2/badge)  [![NuGet](https://img.shields.io/nuget/v/BatchProcess.AutoJob.svg)](https://www.nuget.org/packages/BatchProcess.AutoJob) ![License Apache](https://img.shields.io/github/license/nleabcdef/BatchJob.svg)
 
 [![N|Solid](https://raw.githubusercontent.com/nleabcdef/BatchJob/master/common/AutoJob.png)](https://github.com/nleabcdef/BatchJob)
 
