@@ -10,28 +10,28 @@ AutoJob’s fluent based interfaces, allow developers to create integrations with 
 
 # Configuration features, include
   - Config workflow of jobs using fluent interface. 
-		* Build you own integration jobs/tasks, and make or assemble them as workflow
+    * Build you own integration jobs/tasks, and make or assemble them as workflow
   - Configure Message hooks, to subscribe job's push notifications. 
-		* using out of the box notification manager and hook handlers
+    * using out of the box notification manager and hook handlers
   - For extensibility, Configure you own IserviceProvider to override out of the box Service Repo.
   - Configure error handling feature on the fly with every workflow/integration job.
-		* either StopOrExitJob or ContinueOn 
+    * either StopOrExitJob or ContinueOn 
   - Configure Data/Context sharing types, between execution of jobs.
-		* Parent, First, Previous or NoSharing
+	* Parent, First, Previous or NoSharing
   - Configure integration/workflow's runtime as either sequential, parallel, nested/mixed.
   - Compatible with your own, Error handling and logging implementations.
-		* To use any framework of developers/app choice with adapter pattern
+	* To use any framework of developers/app choice with adapter pattern
 
 # Runtime support, include
   - Thread safe execution of jobs.
   - Out of the box support for message hook subscriptions.
-		* better jobs execution management and Async status reporting
+	* better jobs execution management and Async status reporting
   - Workflow types supported, nested, retry, repeatable, sequential and parallel.
   - Common and plug and play error handling and logging modules.
   - Supports both syn and async job execution.
   - Out of the box, in-memory Data/Context sharing.
   - Extendable ServiceRepo, to override out of the box IserviceProvider implementaions.
-		* works well with internal IserviceProvider implementaion
+	* works well with internal IserviceProvider implementaion
 
 > Since it provides modular design, definitely developers could avoid ‘God class’ anti-pattern
 	https://sourcemaking.com/antipatterns/the-blob
@@ -202,8 +202,8 @@ public class AggregateHandler : IHookHandler<JobId>
 ### from nuget
  > https://www.nuget.org/packages/BatchProcess.AutoJob
 
- ###### Please note, Message Hook feature is not yet deployed to nuget.
- ###### referring Example`3 above. Its only available in dev branch which is aggregated for upcoming minor release.
+ ###### Please note, Message Hook feature is not yet deployed to nuget, which is aggregated for upcoming minor release.
+ ###### referring Example`3 above.
 
  - using Package Manager
  ```ps
