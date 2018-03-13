@@ -14,12 +14,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{60D8BF14-2F2D-4D3E-BA85-FC46C91C3B00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchProcess", "example\BatchProcess\BatchProcess.csproj", "{5A628CBF-F4DF-4CFD-B69B-108CF969B88B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6958C138-0C08-4B0F-9F50-3481324FDD54} = {6958C138-0C08-4B0F-9F50-3481324FDD54}
+		{2F316C77-C65F-4FA3-A8B1-6A33D47293BE} = {2F316C77-C65F-4FA3-A8B1-6A33D47293BE}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{719C8BFA-1FA0-4BAD-97E0-E7121D23FD4B}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B1693FD2-0636-4701-A325-96107FB8FC53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

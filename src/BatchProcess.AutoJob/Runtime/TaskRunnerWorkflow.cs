@@ -5,7 +5,7 @@ namespace BatchProcess.AutoJob.Runtime
     /// <summary>
     /// process the workflow jobs in parallel fashion
     /// </summary>
-    public partial class TaskRunner : IWorkflowHost, IWorkflowRunner
+    public partial class TaskRunner : IWorkflowHost<TaskRuntime>, IWorkflowRunner
     {
         private void StartWorkflow()
         {

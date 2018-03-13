@@ -8,7 +8,7 @@ namespace BatchProcess.AutoJob.Runtime
     /// <summary>
     /// process the workflow jobs in sequential fashion
     /// </summary>
-    public partial class SequentialRunner : IWorkflowHost, IWorkflowRunner
+    public partial class SequentialRunner : IWorkflowHost<SequentialRuntime>, IWorkflowRunner
     {
         private JobResult StartWorkflow()
         {
@@ -56,26 +56,46 @@ namespace BatchProcess.AutoJob.Runtime
                     string.Format(_msgAbortError,
                         job.Id.Id, job.Id.Name)));
 
-            innerResult = Process(job, context, out anyError);
+            innerResult = ProcessWithHooks(job, context, out anyError);
             job.mLock.ReleaseMutex();
 
             return innerResult;
         }
 
-        private JobResult Process(IAutomatedJob job, IJobContext context, out bool anyError)
+        private JobResult ProcessWithHooks(IAutomatedJob job, IJobContext context, out bool anyError)
         {
-            JobResult invoke()
-            {
-                job.Context = context;
-                return job.Doable();
-            }
+            JobResult innerResult = null;
+            var jId = job.Id.ToString();
+            var wId = Current.Id.ToString();
+            anyError = false;
+            job.Context = context;
+            job.Context.PushReportToHookAsync(job.Id, 
+                new MessageHook(string.Format(_msgJobSatrted, jId, wId), 
+                    MessageType.Info.ToString(), MessageType.Info));
 
-            var innerResult = ErrorHandle.Expect(invoke,
-                out anyError,
-                _msgWError,
-                string.Format(_msgWError, Current.Id.Id, Current.Id.Name),
-                string.Format(_msgJobError, job.Id.Id, job.Id.Name)
-            );
+            try
+            {
+                innerResult = job.Doable();
+            }
+            catch(Exception ex)
+            {
+                anyError = true;
+                var error = string.Join(Environment.NewLine,
+                    string.Format(_msgWError, Current.Id.Id, Current.Id.Name),
+                    string.Format(_msgJobError, job.Id.Id, job.Id.Name),
+                    ex.Message, ex.StackTrace);
+
+                job.Context.PushReportToHookAsync(job.Id,
+                    new MessageHook(error,
+                    MessageType.Error.ToString(), MessageType.Error));
+                ErrorHandle.Logger.Log(ex);
+            }
+            finally
+            {
+                job.Context.PushReportToHookAsync(job.Id,
+                    new MessageHook(string.Format(_msgJobCompleted, jId, wId),
+                    MessageType.Info.ToString(), MessageType.Info));
+            }
 
             return innerResult;
         }
@@ -83,7 +103,7 @@ namespace BatchProcess.AutoJob.Runtime
         private JobResult ProcessWorkflow(IAutomatedJob job, IJobContext context, out bool anyError)
         {
             anyError = false;
-            return Process(job, context, out anyError);
+            return ProcessWithHooks(job, context, out anyError);
         }
 
         private JobResult ProcessJobs(Queue<IAutomatedJob> jobs, IJobContext context)
@@ -141,5 +161,6 @@ namespace BatchProcess.AutoJob.Runtime
             result = new JobResult(JobStatus.Stoped, new AutoJobException(Current.Id, null, _msgCancel));
             return true;
         }
+ 
     }
 }

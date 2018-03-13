@@ -11,24 +11,27 @@ namespace BatchProcess.AutoJob.Runtime
     /// <summary>
     /// Workflow runner, executes jobs in parallel fashion
     /// </summary>
-    public partial class TaskRunner : IWorkflowHost, IWorkflowRunner
+    public partial class TaskRunner : IWorkflowHost<TaskRuntime>, IWorkflowRunner
     {
         public IWorkflowJob Current { get; protected set; }
         public RuntimeType Type { get { return RuntimeType.Parallel; } }
         public Mutex mLock => Current.mLock;
-        
+        public TaskRuntime Runtime => _runtime;
+
+        protected TaskRuntime _runtime { get; set; }
         protected List<IAutomatedJob> _workflow { get; set; }
 
         private IWorkflowThread<JobResult> _workflowThread { get; set; }
         private CancellationToken _cancelToken;
         private ConcurrentDictionary<string, JobResult> _jobStatus { get; set; }
         private JobResult _result { get; set; }
-        
-        private TaskRunner() { }
+
+        public TaskRunner() :this(null) { }
         public TaskRunner(IWorkflowThread<JobResult> threadHandler = null)
         {
             _workflow = new List<IAutomatedJob>();
-            _workflowThread = threadHandler ?? new WorkflowThread();
+            _runtime = ServiceRepo.Instance.GetServiceOf<TaskRuntime>();
+            _workflowThread = threadHandler ?? _runtime.ServiceProvider.GetServiceOf<IWorkflowThread<JobResult>>(); // new WorkflowThread();
         }
 
         /// <summary>
@@ -103,6 +106,11 @@ namespace BatchProcess.AutoJob.Runtime
             _workflowThread.StopAll();
         }
 
+        public IWorkflowHost<IRuntime> AsHost()
+        {
+            return null;
+        }
+
         private void Init()
         {
             _result = null;
@@ -110,6 +118,6 @@ namespace BatchProcess.AutoJob.Runtime
             _workflow.AddRange(Current.Workflow);
             _jobStatus = new ConcurrentDictionary<string, JobResult>();
         }
-        
+
     }
 }

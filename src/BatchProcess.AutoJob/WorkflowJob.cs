@@ -21,7 +21,7 @@ namespace BatchProcess.AutoJob
         public JobId Id { get; protected set; }
         public Mutex mLock => _lock;
         
-        protected IWorkflowHost _host { get; set; }
+        protected IWorkflowHost<IRuntime> _host { get; set; }
         protected IWorkflowRunner _runner { get; set; }
 
         protected List<IAutomatedJob> _workflow { get; set; }
@@ -34,7 +34,7 @@ namespace BatchProcess.AutoJob
         private WorkflowJob() { }
 
         public WorkflowJob(JobId id, IJobContext context, WhenFailure onFailure,
-            ShareContext share, IWorkflowHost host = null)
+            ShareContext share, IWorkflowHost<IRuntime> host = null)
         {
             if (id == default(JobId) || context == default(IJobContext))
                 throw new ArgumentNullException("id, context");
@@ -43,7 +43,7 @@ namespace BatchProcess.AutoJob
             Context = context;
             OnFailure = onFailure;
             Option = share;
-            _host = host ?? new WorkflowHost(_runtimeType);
+            _host = host ?? ServiceRepo.Instance.GetServiceOf<IWorkflowHost<SequentialRuntime>>()?.AsHost();
             _runner = null;
             _workflow = new List<IAutomatedJob>();
         }

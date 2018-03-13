@@ -3,7 +3,7 @@
     /// <summary>
     /// defines the constant used during parallel execution
     /// </summary>
-    public partial class TaskRunner : IWorkflowHost, IWorkflowRunner
+    public partial class TaskRunner : IWorkflowHost<TaskRuntime>, IWorkflowRunner
     {
         private const string _msgError = "Error occurred in Workflow job.";
         private const string _msgNoWorkflow = "no workflow job are configured.";

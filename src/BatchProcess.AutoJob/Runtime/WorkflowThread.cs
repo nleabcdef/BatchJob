@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace BatchProcess.AutoJob.Runtime
 {
@@ -13,9 +13,9 @@ namespace BatchProcess.AutoJob.Runtime
     internal class WorkflowThread : IWorkflowThread<JobResult>
     {
         private ConcurrentDictionary<string, Task<JobResult>> _tasks { get; set; }
-        private CancellationTokenSource _cancellationSource { get; set; } 
+        private CancellationTokenSource _cancellationSource { get; set; }
         private List<TaskStatus> _runningStatus { get; set; }
-        
+
         public WorkflowThread()
         {
             _tasks = new ConcurrentDictionary<string, Task<JobResult>>();
@@ -24,7 +24,7 @@ namespace BatchProcess.AutoJob.Runtime
                 TaskStatus.WaitingForActivation,
                 TaskStatus.WaitingForChildrenToComplete,
                 TaskStatus.WaitingToRun };
-            _cancellationSource =  new CancellationTokenSource();
+            _cancellationSource = new CancellationTokenSource();
         }
 
         public void AddAndStart(Func<JobResult> task, string id, ref CancellationToken token, bool addCancelToken = false)
@@ -34,8 +34,8 @@ namespace BatchProcess.AutoJob.Runtime
             if (_tasks.ContainsKey(id)) throw new ArgumentException("task id already exists");
 
             token = _cancellationSource.Token;
-            var t = addCancelToken? new Task<JobResult>(task, token) : new Task<JobResult>(task);
-           
+            var t = addCancelToken ? new Task<JobResult>(task, token) : new Task<JobResult>(task);
+
             _tasks[id] = t;
             t.Start();
         }
@@ -87,8 +87,10 @@ namespace BatchProcess.AutoJob.Runtime
             {
                 case TaskStatus.Canceled:
                     return JobStatus.Stoped;
+
                 case TaskStatus.Faulted:
                     return JobStatus.CompletedWithError;
+
                 case TaskStatus.Running:
                 case TaskStatus.WaitingForActivation:
                 case TaskStatus.WaitingForChildrenToComplete:

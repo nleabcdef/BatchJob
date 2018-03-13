@@ -3,6 +3,9 @@ using System.Threading;
 
 namespace BatchProcess.AutoJob.Runtime
 {
+    /// <summary>
+    /// Job execution controller/manager used to control runtime execution using stop, wait, status methods
+    /// </summary>
     public interface IWorkflowRunner
     {
         void SoftStop();

@@ -5,20 +5,23 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using BatchProcess.AutoJob;
 
 namespace BatchProcess.AutoJob.Runtime
 {
     /// <summary>
     /// Workflow runner, executes jobs in sequential fashion
     /// </summary>
-    public partial class SequentialRunner : IWorkflowHost, IWorkflowRunner
+    public partial class SequentialRunner : IWorkflowHost<SequentialRuntime>, IWorkflowRunner
     {
         public IWorkflowJob Current { get; protected set; }
         public RuntimeType Type { get { return RuntimeType.Sequential; } }
         public Mutex mLock => Current.mLock;
+        public SequentialRuntime Runtime => _runtime;
 
         protected List<IAutomatedJob> _workflow { get; set; }
         protected Task<JobResult> _task { get; private set; }
+        protected SequentialRuntime _runtime { get; set; }
 
         private IWorkflowThread<JobResult> _workflowThread { get; set; }
         private CancellationToken _cancelToken;
@@ -26,11 +29,12 @@ namespace BatchProcess.AutoJob.Runtime
         private ConcurrentDictionary<string, JobStatus> _jobStatus { get; set; }
         private IJobContext _context { get; set; }
        
-        private SequentialRunner() { }
+        public SequentialRunner(): this(null) { }
         public SequentialRunner(IWorkflowThread<JobResult> threadHandler = null)
         {
             _workflow = new List<IAutomatedJob>();
-            _workflowThread = threadHandler ?? new WorkflowThread();
+            _runtime = ServiceRepo.Instance.GetServiceOf<SequentialRuntime>();
+            _workflowThread = threadHandler ?? _runtime.ServiceProvider.GetServiceOf<IWorkflowThread<JobResult>>();  // new WorkflowThread();
         }
 
         /// <summary>
@@ -102,6 +106,11 @@ namespace BatchProcess.AutoJob.Runtime
         public void SoftStop()
         {
             _workflowThread.StopAll();
+        }
+
+        public IWorkflowHost<IRuntime> AsHost()
+        {
+            return this;
         }
 
         private void Init()
