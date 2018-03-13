@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace BatchProcess
 {
     /// <summary>
-    /// examples of workflow job processing, 
-    /// updated in Readme file 
+    /// examples of workflow job processing,
+    /// updated in Readme file
     /// </summary>
     internal class ReadmeExample
     {
-        public void Run()
+        public void RunAll()
         {
-            Example1();
-            Example2();
+            WorkflowJob();
+            RetryJob();
         }
 
-        private void Example2()
+        public void RetryJob()
         {
             IAutomatedJob _processFile = InlineJob.GetDefault((ctx) =>
             {
@@ -40,13 +40,13 @@ namespace BatchProcess
                 Console.WriteLine(r.Error.Message); //print retry error/excpetion message
         }
 
-        private void Example1()
+        public void WorkflowJob()
         {
             IAutomatedJob _getAuthToken = InlineJob.GetDefault((ctx) =>
             {
                 //call actual api and get Auth token
                 var token = Guid.NewGuid().ToString();
-                
+
                 //store the token in to Context store
                 ctx.SetValue(token, "token-key");
                 //Console.WriteLine(token);
@@ -76,9 +76,6 @@ namespace BatchProcess
             var result = _integraion.Doable(); //run the integration job
 
             Console.WriteLine(result.Status.ToString()); //Completed
-            
         }
-
     }
-    
 }

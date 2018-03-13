@@ -7,11 +7,14 @@ namespace BatchProcess.AutoJob
     {
         public JobStatus Status { get; protected set; }
         public AutoJobException Error { get; protected set; }
+        public IReadOnlyList<MessageHook> Messages { get; protected set; }
         private JobResult() { }
-        public JobResult(JobStatus status, AutoJobException error = null)
+        public JobResult(JobStatus status, AutoJobException error = null, IReadOnlyList<MessageHook> messages = null)
         {
             Status = status;
             Error = error;
+            Messages = messages;
         }
+        
     }
 }

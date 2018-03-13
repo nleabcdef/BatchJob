@@ -9,19 +9,29 @@ With AutoJob, any integration code will become modular, easy to maintain and qui
 AutoJob’s fluent based interfaces, allow developers to create integrations with modular design and assemble them as repeatable or sequential and parallel tasks. And out of the box run time host will allow them to execute as configured.
 
 # Configuration features, include
-  - Creating workflow of jobs using fluent interface 
-  - How to handle error/failures while executing jobs
-		a) StopOrExitJob or ContinueOn	
-		b) Data/Context sharing types could 
-  - Execution/Runtime type, either sequential or parallel
-  - Error handling and logging configurations allow to use any framework of developers/app choice with adapter pattern
+  - Config workflow of jobs using fluent interface. 
+		* Build you own integration jobs/tasks, and make or assemble them as workflow
+  - Configure Message hooks, to subscribe job's push notifications. 
+		* using out of the box notification manager and hook handlers
+  - For extensibility, Configure you own IserviceProvider to override out of the box Service Repo.
+  - Configure error handling feature on the fly with every workflow/integration job.
+		* either StopOrExitJob or ContinueOn 
+  - Configure Data/Context sharing types, between execution of jobs.
+		* Parent, First, Previous or NoSharing
+  - Configure integration/workflow's runtime as either sequential, parallel, nested/mixed.
+  - Compatible with your own, Error handling and logging implementations.
+		* To use any framework of developers/app choice with adapter pattern
 
 # Runtime support, include
-  - Thread safe execution of jobs
-  - Workflow types supported, nested, retry, repeatable, sequential and parallel
-  - Common and plug and play error handling and logging modules
-  - Supports both syn and async job execution
-  - Out of the box, in-memory Data/Context sharing
+  - Thread safe execution of jobs.
+  - Out of the box support for message hook subscriptions.
+		* better jobs execution management and Async status reporting
+  - Workflow types supported, nested, retry, repeatable, sequential and parallel.
+  - Common and plug and play error handling and logging modules.
+  - Supports both syn and async job execution.
+  - Out of the box, in-memory Data/Context sharing.
+  - Extendable ServiceRepo, to override out of the box IserviceProvider implementaions.
+		* works well with internal IserviceProvider implementaion
 
 > Since it provides modular design, definitely developers could avoid ‘God class’ anti-pattern
 	https://sourcemaking.com/antipatterns/the-blob
@@ -63,7 +73,7 @@ IAutomatedJob _download = InlineJob.GetDefault((ctx) =>
     return new JobResult(JobStatus.Completed);
 });
 
-//build integraion workflow - sequential by default - parallel also be possible
+//build integration workflow - sequential by default - parallel also be possible
 IAutomatedJob _integraion = Builder.BuildWorkflow(InlineJob.GetJobId())
     .WithOption(WhenFailure.StopOrExitJob, ShareContext.previous)
     .AddJob(_getAuthToken)
@@ -79,12 +89,13 @@ Example - Job with retry functionality
 ```cs
 IAutomatedJob _processFile = InlineJob.GetDefault((ctx) =>
 {
-    //to simulate the retry when job failed
-    throw new Exception("making the job failed");
+    //to simulate the retry when job failed. expect break-point hit in VS IDE with Debug configuration
+    throw new Exception("making the job failed"); 
     return new JobResult(JobStatus.Completed);
 });
 
 //make the job as retry, when error/exception is anticipated
+//retry max of 3 times with 500 ms inerval
 var retry = _processFile.ConvertToRetry(3, TimeSpan.FromMilliseconds(500));
 
 ErrorHandle.Logger = NullLogger.Instance; //disable the default console logging
@@ -94,6 +105,83 @@ var rResult = retry.Doable(); // run retry job
 Console.WriteLine(rResult.Status); //CompletedWithError
 foreach (var r in retry.RetryResults)
     Console.WriteLine(r.Error.Message); //print retry error/excpetion message
+```
+
+***Example`3 - Message hook/subscription and handling - for better status reporting
+
+Using
+```cs
+using BatchProcess.AutoJob;
+using BatchProcess.AutoJob.Extensions;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+```
+
+```cs
+//setup Download job
+IAutomatedJob _download = InlineJob.GetDefault((ctx) =>
+{
+    //push notification
+    ctx.PushReportToHookAsync(ctx.ParentJobId,
+        new MessageHook("Download Started", "Info", MessageType.Info));
+
+    // download the data
+    Task.Delay(200).Wait();
+
+    //push notification
+    ctx.PushReportToHookAsync(ctx.ParentJobId,
+        new MessageHook("Download Completed", "Info", MessageType.Info));
+
+    return new JobResult(JobStatus.Completed);
+});
+
+//get notification manager, from service repo
+var manager = ServiceRepo.Instance.GetServiceOf<INotificationManager<JobId>>();
+
+//setup Message hooks
+var hanlder = new AggregateHandler(); // bring your own hook/message handler
+manager.RegisterHook(_download.Id, MessageType.Info, hanlder);
+
+var result = _download.Doable(); //execute the job
+
+Console.WriteLine(result.Status.ToString()); //Completed
+
+//wait for handler to aggregate the message hooks, since push is ASync
+Task.Delay(500).Wait();
+
+//print the messages recieved
+hanlder.MessagesRecieved.ToList().ForEach(m =>
+{
+    Console.WriteLine(m.Item2.ToString());
+});
+```
+```cs
+/// <summary>
+/// Sample notification handler, to aggregate messages when it arraives
+/// </summary>
+public class AggregateHandler : IHookHandler<JobId>
+{
+    public string Id => "id-of-AggregateHandler";
+    public string Name => "Aggregate-Handler";
+    public IReadOnlyCollection<Tuple<JobId, MessageHook>> MessagesRecieved => _messages.AsReadOnly();
+
+    protected List<Tuple<JobId, MessageHook>> _messages { get; set; }
+
+    public void DoHandle(JobId sender, MessageHook message)
+    {
+        lock (_messages)
+        {
+            _messages.Add(new Tuple<JobId, MessageHook>(sender, message));
+        }
+    }
+
+    public AggregateHandler()
+    {
+        _messages = new List<Tuple<JobId, MessageHook>>();
+    }
+}
 ```
 
  - more samples yet to be uploaded.
@@ -113,6 +201,9 @@ foreach (var r in retry.RetryResults)
 # Installation
 ### from nuget
  > https://www.nuget.org/packages/BatchProcess.AutoJob
+
+ ###### Please note, Message Hook feature is not yet deployed to nuget.
+ ###### referring Example`3 above. Its only available in dev branch which is aggregated for upcoming minor release.
 
  - using Package Manager
  ```ps

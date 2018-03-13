@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using BatchProcess.Shared;
+using System.Threading.Tasks;
 
 namespace BatchProcess.AutoJob
 {
@@ -13,10 +15,12 @@ namespace BatchProcess.AutoJob
     {
         public JobId ParentJobId { get; protected set; }
         public IReadOnlyList<JobId> ProcessedJobs => _processedJobs.ToList().AsReadOnly();
+        public INotificationManager<JobId> HookManager => _hookManager;
 
         protected ConcurrentBag<JobId> _processedJobs { get; set; }
         protected ConcurrentDictionary<string, object> _values { get; set; }
         protected ConcurrentDictionary<string, Type> _types { get; set; }
+        protected INotificationManager<JobId> _hookManager { get; set; }
 
         /// <summary>
         /// get value from context store
@@ -69,6 +73,11 @@ namespace BatchProcess.AutoJob
             _processedJobs.Add(id);
         }
 
+        public void PushReportToHookAsync(JobId sender, MessageHook message)
+        {
+            new Task(() => _hookManager.PushAsync(sender, message)).Start();
+        }
+
         private JobContext() { }
         public JobContext(JobId parentId)
         {
@@ -77,6 +86,7 @@ namespace BatchProcess.AutoJob
             _processedJobs = new ConcurrentBag<JobId>();
             _values = new ConcurrentDictionary<string, object>();
             _types = new ConcurrentDictionary<string, Type>();
+            _hookManager = ServiceRepo.Instance.GetServiceOf<INotificationManager<JobId>>();
         }
     }
 }

@@ -4,6 +4,10 @@ using System.Threading;
 
 namespace BatchProcess.AutoJob.Runtime
 {
+    /// <summary>
+    /// Threading infra required by job exection runtime.
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
     public interface IWorkflowThread<TResult>
         where TResult : class
     {

@@ -8,7 +8,7 @@ namespace BatchProcess.AutoJob.Runtime
     /// <summary>
     /// defines the error/message constants used in Sequential Runner
     /// </summary>
-    public partial class SequentialRunner : IWorkflowHost, IWorkflowRunner
+    public partial class SequentialRunner : IWorkflowHost<SequentialRuntime>, IWorkflowRunner
     {
         private const string _msgError = "Error occurred in Retry Job.";
         private const string _msgJobError = "Error < Retry Job of id: {0}, name: {1}>.";
@@ -18,5 +18,7 @@ namespace BatchProcess.AutoJob.Runtime
         private const string _msgAbortError = "Workflow Job aborted, Error < Job of id: {0}, name: {1}>.";
         private const string _msgAborted = "Job aborted, OnFailure set to  WhenFailure.StopOrExitJob.";
         private const string _msgCancel = "Job processing has been stopped, On Stop command.";
+        private const string _msgJobSatrted = "Started : Job : {0}, with workflow : {1}";
+        private const string _msgJobCompleted = "Completed : Job : {0}, with workflow : {1}";
     }
 }

@@ -24,7 +24,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\BatchProcess.AutoJob\BatchProcess.AutoJob.csproj" />
+    <Reference Include="BatchProcess.AutoJob">
+      <HintPath>..\..\lib\BatchProcess.AutoJob.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

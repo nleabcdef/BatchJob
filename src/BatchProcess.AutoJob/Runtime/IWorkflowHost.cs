@@ -4,9 +4,15 @@ using System.Threading.Tasks;
 
 namespace BatchProcess.AutoJob.Runtime
 {
-    public interface IWorkflowHost
+    /// <summary>
+    /// Hosts the job execution
+    /// </summary>
+    /// <typeparam name="TRuntime"></typeparam>
+    public interface IWorkflowHost<out TRuntime>
+        where TRuntime : IRuntime
     {
-        RuntimeType Type { get; }
+        TRuntime Runtime { get; }
+        IWorkflowHost<IRuntime> AsHost();
         IWorkflowRunner Start(IWorkflowJob workflow);
     }
 }
