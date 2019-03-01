@@ -1,6 +1,7 @@
 ﻿using BatchProcess.AutoJob;
 using BatchProcess.AutoJob.Extensions;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,9 +49,6 @@ namespace BatchProcess
             var result = _download.Doable(); //execute the job
 
             Console.WriteLine(result.Status.ToString()); //Completed
-
-            //wait for handler to aggregate the message hooks, since push is ASync
-            Task.Delay(500).Wait();
 
             //print the messages recieved
             hanlder.MessagesRecieved.ToList().ForEach(m =>
@@ -104,14 +102,12 @@ namespace BatchProcess
 
             Console.WriteLine(result.Status.ToString()); //Completed
 
-            //wait for handler to aggregate the message hooks, since push is ASync
-            Task.Delay(500).Wait();
-
             //print the messages recieved
             hanlder.MessagesRecieved.ToList().ForEach(m =>
             {
                 Console.WriteLine(m.Item2.ToString());
             });
+
         }
     }
 
@@ -122,21 +118,40 @@ namespace BatchProcess
     {
         public string Id => "id-of-AggregateHandler";
         public string Name => "Aggregate-Handler";
-        public IReadOnlyCollection<Tuple<JobId, MessageHook>> MessagesRecieved => _messages.AsReadOnly();
-
-        protected List<Tuple<JobId, MessageHook>> _messages { get; set; }
-
-        public void DoHandle(JobId sender, MessageHook message)
+        IList<Task<bool>> _handles { get; set; }
+        public IEnumerable<Tuple<JobId, MessageHook>> MessagesRecieved
         {
-            lock (_messages)
+            get
             {
-                _messages.Add(new Tuple<JobId, MessageHook>(sender, message));
+                Task.WaitAll(_handles.ToArray());
+                new TaskFactory().StartNew(() => {
+                    lock(_handles)
+                    {
+                        _handles = _handles.Where(t => !t.IsCompleted).ToList();
+                    }
+                });
+                return _messages.AsEnumerable();
             }
         }
+        protected ConcurrentQueue<Tuple<JobId, MessageHook>> _messages { get; set; }
 
+        public Task<bool> DoHandle(JobId sender, MessageHook message)
+        {
+            var tsk = new Task<bool>(() =>
+            {
+                _messages.Enqueue(new Tuple<JobId, MessageHook>(sender, message));
+                return true;
+            });
+            lock (_handles) { _handles.Add(tsk); }
+            
+            tsk.Start();
+            return tsk;
+        }
+        
         public AggregateHandler()
         {
-            _messages = new List<Tuple<JobId, MessageHook>>();
+            _messages = new ConcurrentQueue<Tuple<JobId, MessageHook>>();
+            _handles = new List<Task<bool>>();
         }
     }
 }

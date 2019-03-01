@@ -75,7 +75,7 @@ namespace BatchProcess.AutoJob
 
         public void PushReportToHookAsync(JobId sender, MessageHook message)
         {
-            new Task(() => _hookManager.PushAsync(sender, message)).Start();
+            _hookManager.PushAsync(sender, message);
         }
 
         private JobContext() { }

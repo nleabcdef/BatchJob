@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BatchProcess.AutoJob
 {
@@ -19,12 +20,14 @@ namespace BatchProcess.AutoJob
         const string _messageHanlder = "Message hanlded by Hook Id: {0}, Name: {1}.";
 
         private static string _defaultName = "Default-HookHandler";
+        private ILogAdapter _logger { get; set; }
 
         public HookHandler() : this(null, null) { }
         public HookHandler(string id = "", string name = "")
         {
             _id = string.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString() : id;
-            _id = string.IsNullOrWhiteSpace(name) ? _defaultName : name;
+            _name = string.IsNullOrWhiteSpace(name) ? _defaultName : name;
+            _logger = ErrorHandle.Logger;
         }
 
         /// <summary>
@@ -32,11 +35,15 @@ namespace BatchProcess.AutoJob
         /// </summary>
         /// <param name="sender">job's indentifier is the one, who psuhed the message hook</param>
         /// <param name="message">MessageHook to be handled</param>
-        public void DoHandle(JobId sender, MessageHook message)
+        public Task<bool> DoHandle(JobId sender, MessageHook message)
         {
-            ErrorHandle.Logger.LogMessage(string.Format(_message, sender.ToString()), LogLevel.Info);
-            ErrorHandle.Logger.LogMessage(message.ToString(), LogLevel.Info);
-            ErrorHandle.Logger.LogMessage(string.Format(_messageHanlder, Id, Name), LogLevel.Info);
+            return new TaskFactory<bool>().StartNew(() =>
+            {
+                _logger.LogMessage(string.Format(_message, sender.ToString()), LogLevel.Info);
+                _logger.LogMessage(message.ToString(), LogLevel.Info);
+                _logger.LogMessage(string.Format(_messageHanlder, Id, Name), LogLevel.Info);
+                return true;
+            });
         }
     }
 }

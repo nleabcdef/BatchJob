@@ -69,7 +69,7 @@ namespace BatchProcess.TestAutoJob.Hooks
         }
 
         [Fact]
-        public void RegisterHook_with_dupleicate_hooks()
+        public void RegisterHook_with_duplicate_hooks()
         {
             //arrange
             INotificationManager<JobId> notificationMgr = null;

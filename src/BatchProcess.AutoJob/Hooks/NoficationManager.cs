@@ -66,16 +66,32 @@ namespace BatchProcess.AutoJob
         {
             if (senderKey == default(JobId)) throw new ArgumentNullException(nameof(senderKey));
             if (message == default(IHookHandler<JobId>)) throw new ArgumentNullException(nameof(message));
+            var logger = ErrorHandle.Logger;
 
             var val = _hooks.Values.Where(h => h.Id.Equals(senderKey) && (h.Type == message.Type || h.Type == MessageType.All));
             if (val.Any())
             {
                 val.AsParallel().ForAll(h =>
                 {
-                    new Task(() => Push(senderKey, message, h)).Start();
+                    try
+                    {
+                        h.Handler.DoHandle(senderKey, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogMessage(string.Format(
+                            _errorInHanlder,
+                            senderKey.Id,
+                            senderKey.Name,
+                            message.Type,
+                            h.Handler.Id,
+                            h.Handler.Name));
+                        logger.Log(ex);
+                    }
                 });
             }
-        }        
+
+        }
 
         /// <summary>
         /// Removes the Given key from message hook subscription
@@ -87,24 +103,6 @@ namespace BatchProcess.AutoJob
                 throw new ArgumentNullException(nameof(id));
 
             _hooks.TryRemove(id, out HookNotification hook);
-        }
-
-        private void Push(JobId senderKey, MessageHook message, HookNotification h)
-        {
-            ErrorHandle.Expect(() =>
-            {
-                h.Handler.DoHandle(senderKey, message);
-                return true;
-            },
-            out bool anyError,
-            string.Format(_errorInHanlder,
-                senderKey.Id,
-                senderKey.Name,
-                message.Type,
-                h.Handler.Id,
-                h.Handler.Name),
-            string.Format(_errorMessage,
-                message.Text));
         }
 
         /// <summary>

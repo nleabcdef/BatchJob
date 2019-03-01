@@ -1,4 +1,6 @@
-﻿namespace BatchProcess.AutoJob
+﻿using System.Threading.Tasks;
+
+namespace BatchProcess.AutoJob
 {
     /// <summary>
     /// MessageHook handler
@@ -9,6 +11,6 @@
     {
         string Id { get; }
         string Name { get; }
-        void DoHandle(TKey sender, MessageHook message);
+        Task<bool> DoHandle(TKey sender, MessageHook message);
     }
 }
